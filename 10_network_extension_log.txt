@@ -1,0 +1,28 @@
+getpwuid_r did not find a match for uid 501
+Timestamp               Ty Process[PID:TID]
+2026-09-23 23:31:33.247 Df PrivacyLensIOS[20374:fd23] [com.apple.networkextension:] Adding BF86305E-4B6F-4A0F-9F91-DCE4CF8577B5 to the loaded configurations
+2026-09-23 23:31:33.247 Df PrivacyLensIOS[20374:fd23] [com.apple.networkextension:] Reload from disk complete
+2026-09-23 23:31:33.249 E  PrivacyLensIOS[20374:fd23] [com.apple.networkextension:] current generation is 0, notification state == 0, token == 155
+2026-09-23 23:31:33.249 Df PrivacyLensIOS[20374:fd23] [com.apple.networkextension:] Clearing BF86305E-4B6F-4A0F-9F91-DCE4CF8577B5 from the loaded configurations
+2026-09-23 23:31:33.254 Df PrivacyLensIOS[20374:fd23] [com.apple.networkextension:] Adding BF86305E-4B6F-4A0F-9F91-DCE4CF8577B5 to the loaded configurations
+2026-09-23 23:31:33.254 Df PrivacyLensIOS[20374:fd23] [com.apple.networkextension:] Reload from disk complete
+2026-09-23 23:31:33.258 E  PrivacyLensIOS[20374:fd23] [com.apple.networkextension:] current generation is 0, notification state == 0, token == 155
+2026-09-23 23:31:33.259 Df PrivacyLensIOS[20374:fd23] [com.apple.networkextension:] Clearing BF86305E-4B6F-4A0F-9F91-DCE4CF8577B5 from the loaded configurations
+2026-09-23 23:31:33.261 Df PrivacyLensIOS[20374:fd23] [com.apple.networkextension:] Adding BF86305E-4B6F-4A0F-9F91-DCE4CF8577B5 to the loaded configurations
+2026-09-23 23:31:33.261 Df PrivacyLensIOS[20374:fd23] [com.apple.networkextension:] Reload from disk complete
+2026-09-23 23:31:33.261 Df PrivacyLensIOS[20374:fd23] [com.apple.networkextension:]  Saving configuration PrivacyLens with existing signature (null)
+2026-09-23 23:31:33.267 E  PrivacyLensIOS[20374:fd23] [com.apple.networkextension:] Failed to send a 6 message to nehelper: <dictionary: 0x1e6009320> { count = 1, transaction: 0, voucher = 0x0, contents =
+	"XPCErrorDescription" => <string: 0x1e60094b8> { length = 18, contents = "Connection invalid" }
+}
+2026-09-23 23:31:33.267 E  PrivacyLensIOS[20374:fd23] [com.apple.networkextension:]  Failed to save configuration PrivacyLens: Error Domain=NEConfigurationErrorDomain Code=11 "IPC failed" UserInfo={NSLocalizedDescription=IPC failed}
+2026-09-23 23:31:33.267 Df PrivacyLensIOS[20374:fd23] [com.apple.networkextension:] Lost connection to nehelper: Connection invalid
+2026-09-23 23:31:33.267 E  PrivacyLensIOS[20374:fd05] [com.apple.networkextension:] Failed to save configuration: Error Domain=NEVPNErrorDomain Code=5 "IPC failed" UserInfo={NSLocalizedDescription=IPC failed}
+2026-09-23 23:31:43.326 Df trustd[18406:e36e] [com.apple.networkextension:] nehelper connection for delegate class 13 received XPC_ERROR_CONNECTION_INVALID
+2026-09-23 23:31:43.326 E  trustd[18406:e86d] [com.apple.networkextension:] nehelper sent invalid response: <dictionary: 0x1e6009320> { count = 1, transaction: 0, voucher = 0x0, contents =
+	"XPCErrorDescription" => <string: 0x1e60094b8> { length = 18, contents = "Connection invalid" }
+}
+2026-09-23 23:31:52.790 Df nsurlsessiond[18424:f51a] [com.apple.networkextension:] nehelper connection for delegate class 13 received XPC_ERROR_CONNECTION_INVALID
+2026-09-23 23:31:52.790 E  nsurlsessiond[18424:ed86] [com.apple.networkextension:] nehelper sent invalid response: <dictionary: 0x1e6009320> { count = 1, transaction: 0, voucher = 0x0, contents =
+	"XPCErrorDescription" => <string: 0x1e60094b8> { length = 18, contents = "Connection invalid" }
+}
+2026-09-23 23:32:02.692 Df log[21338:0] [com.apple.log:] log run noninteractively, parent: 18302 (launchd_sim), args: 'log' 'show' '--last' '2m' '--style' 'compact' '--predicate' 'eventMessage CONTAINS "PRIVACYLENS_PROBE" OR subsystem CONTAINS "networkextension" OR process == "nehelper" OR process == "nesession

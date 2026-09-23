@@ -1,0 +1,4 @@
+---- Built products ----
+build/Build/Products/Debug-iphonesimulator/PrivacyLensTunnel.appex
+build/Build/Products/Debug-iphonesimulator/PrivacyLensIOS.app
+build/Build/Products/Debug-iphonesimulator/PrivacyLensIOS.app/PlugIns/PrivacyLensTunnel.appex
