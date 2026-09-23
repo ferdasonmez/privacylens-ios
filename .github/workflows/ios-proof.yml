@@ -1,0 +1,83 @@
+name: iOS Architecture Proof
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  proof:
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 1. Xcode version
+        run: |
+          mkdir -p proof
+          xcodebuild -version | tee proof/01_xcode_version.txt
+          sw_vers | tee -a proof/01_xcode_version.txt
+
+      - name: 2. Generate Xcode project (PrivacyLensIOS + PrivacyLensTunnel)
+        run: |
+          brew install xcodegen
+          xcodegen generate
+          xcodebuild -list -project PrivacyLensIOS.xcodeproj | tee proof/02_targets_and_schemes.txt
+          find . -path ./.git -prune -o -path ./build -prune -o -path ./proof -prune -o -type f -print | sort | tee proof/03_project_structure.txt
+
+      - name: 3. Pick an iPhone simulator
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c "
+          import json,sys
+          d=json.load(sys.stdin)['devices']
+          for rt,devs in d.items():
+              if 'iOS' in rt:
+                  for x in devs:
+                      if x['name'].startswith('iPhone'):
+                          print(x['udid']); sys.exit()
+          ")
+          echo "UDID=$UDID" >> $GITHUB_ENV
+          xcrun simctl list devices available | grep "$UDID" | tee proof/04_simulator.txt
+
+      - name: 4. Build app + Packet Tunnel extension for simulator
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project PrivacyLensIOS.xcodeproj \
+            -scheme PrivacyLensIOS \
+            -destination "id=$UDID" \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO 2>&1 | tee proof/05_build_log.txt
+          echo "---- Built products ----" | tee proof/06_built_products.txt
+          find build/Build/Products -maxdepth 4 \( -name "*.app" -o -name "*.appex" \) | tee -a proof/06_built_products.txt
+
+      - name: 5. Unit tests for tracker classification logic
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -project PrivacyLensIOS.xcodeproj \
+            -scheme PrivacyLensCoreTests \
+            -destination "id=$UDID" \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO 2>&1 | tee proof/07_unit_tests.txt
+
+      - name: 6. Run app in simulator and take screenshot
+        continue-on-error: true
+        run: |
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          APP=$(find build/Build/Products -maxdepth 2 -name "PrivacyLensIOS.app" | head -1)
+          xcrun simctl install "$UDID" "$APP" 2>&1 | tee proof/08_run_log.txt
+          xcrun simctl launch "$UDID" com.thecyberlayer.PrivacyLensIOS 2>&1 | tee -a proof/08_run_log.txt
+          sleep 20
+          xcrun simctl io "$UDID" screenshot proof/09_simulator_screenshot.png
+          xcrun simctl spawn "$UDID" log show --last 2m --style compact \
+            --predicate 'eventMessage CONTAINS "PRIVACYLENS_PROBE" OR subsystem CONTAINS "networkextension" OR process == "nehelper" OR process == "nesessionmanager"' \
+            2>&1 | tail -80 | tee proof/10_network_extension_log.txt
+
+      - name: Upload proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: privacylens-ios-proof
+          path: proof/
