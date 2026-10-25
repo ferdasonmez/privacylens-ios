@@ -1,0 +1,35 @@
+getpwuid_r did not find a match for uid 501
+Timestamp               Ty Process[PID:TID]
+2026-10-25 23:29:28.437 Df nsurlsessiond[9127:7f0d] [com.apple.networkextension:] nehelper connection for delegate class 13 received XPC_ERROR_CONNECTION_INVALID
+2026-10-25 23:29:28.438 E  nsurlsessiond[9127:7f11] [com.apple.networkextension:] nehelper sent invalid response: <dictionary: 0x1e6009320> { count = 1, transaction: 0, voucher = 0x0, contents =
+	"XPCErrorDescription" => <string: 0x1e60094b8> { length = 18, contents = "Connection invalid" }
+}
+2026-10-25 23:29:29.049 Df trustd[9138:7f2e] [com.apple.networkextension:] nehelper connection for delegate class 13 received XPC_ERROR_CONNECTION_INVALID
+2026-10-25 23:29:29.049 E  trustd[9138:7fe3] [com.apple.networkextension:] nehelper sent invalid response: <dictionary: 0x1e6009320> { count = 1, transaction: 0, voucher = 0x0, contents =
+	"XPCErrorDescription" => <string: 0x1e60094b8> { length = 18, contents = "Connection invalid" }
+}
+2026-10-25 23:29:30.174 Df trustd[9138:843b] [com.apple.networkextension:] nehelper connection for delegate class 13 received XPC_ERROR_CONNECTION_INVALID
+2026-10-25 23:29:30.174 E  trustd[9138:7fe3] [com.apple.networkextension:] nehelper sent invalid response: <dictionary: 0x1e6009320> { count = 1, transaction: 0, voucher = 0x0, contents =
+	"XPCErrorDescription" => <string: 0x1e60094b8> { length = 18, contents = "Connection invalid" }
+}
+2026-10-25 23:29:30.303 Df trustd[9138:7fe3] [com.apple.networkextension:] nehelper connection for delegate class 13 received XPC_ERROR_CONNECTION_INVALID
+2026-10-25 23:29:30.303 E  trustd[9138:843b] [com.apple.networkextension:] nehelper sent invalid response: <dictionary: 0x1e6009320> { count = 1, transaction: 0, voucher = 0x0, contents =
+	"XPCErrorDescription" => <string: 0x1e60094b8> { length = 18, contents = "Connection invalid" }
+}
+2026-10-25 23:29:30.688 Df trustd[9138:7f2e] [com.apple.networkextension:] nehelper connection for delegate class 13 received XPC_ERROR_CONNECTION_INVALID
+2026-10-25 23:29:30.688 E  trustd[9138:844e] [com.apple.networkextension:] nehelper sent invalid response: <dictionary: 0x1e6009320> { count = 1, transaction: 0, voucher = 0x0, contents =
+	"XPCErrorDescription" => <string: 0x1e60094b8> { length = 18, contents = "Connection invalid" }
+}
+2026-10-25 23:29:30.850 Df trustd[9138:843b] [com.apple.networkextension:] nehelper connection for delegate class 13 received XPC_ERROR_CONNECTION_INVALID
+2026-10-25 23:29:30.850 E  trustd[9138:7f2e] [com.apple.networkextension:] nehelper sent invalid response: <dictionary: 0x1e6009320> { count = 1, transaction: 0, voucher = 0x0, contents =
+	"XPCErrorDescription" => <string: 0x1e60094b8> { length = 18, contents = "Connection invalid" }
+}
+2026-10-25 23:29:31.053 Df trustd[9138:844e] [com.apple.networkextension:] nehelper connection for delegate class 13 received XPC_ERROR_CONNECTION_INVALID
+2026-10-25 23:29:31.055 E  trustd[9138:7f2e] [com.apple.networkextension:] nehelper sent invalid response: <dictionary: 0x1e6009320> { count = 1, transaction: 0, voucher = 0x0, contents =
+	"XPCErrorDescription" => <string: 0x1e60094b8> { length = 18, contents = "Connection invalid" }
+}
+2026-10-25 23:29:47.004 Df trustd[9138:7fe3] [com.apple.networkextension:] nehelper connection for delegate class 13 received XPC_ERROR_CONNECTION_INVALID
+2026-10-25 23:29:47.004 E  trustd[9138:8778] [com.apple.networkextension:] nehelper sent invalid response: <dictionary: 0x1e6009320> { count = 1, transaction: 0, voucher = 0x0, contents =
+	"XPCErrorDescription" => <string: 0x1e60094b8> { length = 18, contents = "Connection invalid" }
+}
+2026-10-25 23:31:06.283 Df log[12314:0] [com.apple.log:] log run noninteractively, parent: 9045 (launchd_sim), args: 'log' 'show' '--last' '2m' '--style' 'compact' '--predicate' 'eventMessage CONTAINS "PRIVACYLENS_PROBE" OR subsystem CONTAINS "networkextension" OR process == "nehelper" OR process == "nesessionm
