@@ -44,11 +44,28 @@ jobs:
           xcodebuild build \
             -project PrivacyLensIOS.xcodeproj \
             -scheme PrivacyLensIOS \
+            -configuration Debug \
+            -sdk iphonesimulator \
             -destination "id=$UDID" \
             -derivedDataPath build \
             CODE_SIGNING_ALLOWED=NO 2>&1 | tee proof/05_build_log.txt
           echo "---- Built products ----" | tee proof/06_built_products.txt
           find build/Build/Products -maxdepth 4 \( -name "*.app" -o -name "*.appex" \) | tee -a proof/06_built_products.txt
+
+      - name: 4b. Zip simulator .app bundle
+        run: |
+          mkdir -p sim-app
+          ditto -c -k --sequesterRsrc --keepParent \
+            build/Build/Products/Debug-iphonesimulator/PrivacyLensIOS.app \
+            sim-app/PrivacyLens-simulator.zip
+          ls -la sim-app
+
+      - name: Upload simulator .app
+        uses: actions/upload-artifact@v4
+        with:
+          name: PrivacyLens-simulator
+          path: sim-app/PrivacyLens-simulator.zip
+          if-no-files-found: error
 
       - name: 5. Unit tests for tracker classification logic
         continue-on-error: true
@@ -66,14 +83,24 @@ jobs:
         run: |
           xcrun simctl boot "$UDID" || true
           xcrun simctl bootstatus "$UDID" -b
-          APP=$(find build/Build/Products -maxdepth 2 -name "PrivacyLensIOS.app" | head -1)
+          APP=build/Build/Products/Debug-iphonesimulator/PrivacyLensIOS.app
           xcrun simctl install "$UDID" "$APP" 2>&1 | tee proof/08_run_log.txt
           xcrun simctl launch "$UDID" com.thecyberlayer.PrivacyLensIOS 2>&1 | tee -a proof/08_run_log.txt
-          sleep 20
-          xcrun simctl io "$UDID" screenshot proof/09_simulator_screenshot.png
+          sleep 10
+          mkdir -p launch-screenshot
+          xcrun simctl io booted screenshot launch-screenshot/ios-launch-screenshot.png
+          cp launch-screenshot/ios-launch-screenshot.png proof/09_simulator_screenshot.png
           xcrun simctl spawn "$UDID" log show --last 2m --style compact \
             --predicate 'eventMessage CONTAINS "PRIVACYLENS_PROBE" OR subsystem CONTAINS "networkextension" OR process == "nehelper" OR process == "nesessionmanager"' \
             2>&1 | tail -80 | tee proof/10_network_extension_log.txt
+
+      - name: Upload launch screenshot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-launch-screenshot
+          path: launch-screenshot/ios-launch-screenshot.png
+          if-no-files-found: error
 
       - name: Upload proof
         if: always()
