@@ -113,6 +113,14 @@ jobs:
           mkdir -p launch-screenshot
           xcrun simctl io booted screenshot launch-screenshot/ios-launch-screenshot.png
           cp launch-screenshot/ios-launch-screenshot.png proof/09_simulator_screenshot.png
+          # Simulator preview: relaunch on the Timeline and Companies tabs and screenshot each.
+          for T in 1 2; do
+            xcrun simctl terminate "$UDID" com.thecyberlayer.PrivacyLensIOS || true
+            xcrun simctl launch "$UDID" com.thecyberlayer.PrivacyLensIOS -previewTab $T
+            sleep 5
+            xcrun simctl io booted screenshot launch-screenshot/ios-preview-tab$T.png
+            cp launch-screenshot/ios-preview-tab$T.png proof/09_simulator_screenshot_tab$T.png
+          done
           xcrun simctl spawn "$UDID" log show --last 2m --style compact \
             --predicate 'eventMessage CONTAINS "PRIVACYLENS_PROBE" OR subsystem CONTAINS "networkextension" OR process == "nehelper" OR process == "nesessionmanager"' \
             2>&1 | tail -80 | tee proof/10_network_extension_log.txt
@@ -122,7 +130,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ios-launch-screenshot
-          path: launch-screenshot/ios-launch-screenshot.png
+          path: launch-screenshot/
           if-no-files-found: error
 
       - name: Upload proof

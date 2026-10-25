@@ -5,7 +5,12 @@ import NetworkExtension
 struct PrivacyLensIOSApp: App {
     var body: some Scene {
         WindowGroup {
+            #if targetEnvironment(simulator)
+            // The simulator has no VPN service, so show the screens with sample data.
+            SimulatorPreviewView()
+            #else
             ContentView()
+            #endif
         }
     }
 }
